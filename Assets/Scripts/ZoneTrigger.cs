@@ -51,9 +51,9 @@ public class ZoneTrigger : MonoBehaviour
 
     private void OnInteract(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        if (playerInZone)
-        {
-            Debug.Log("Interacting with: " + zoneName);
-        }
+    if (playerInZone && !ProgressTracker.Instance.IsZoneDone(zoneName))
+    {
+        ChallengeManager.Instance.OpenChallenge(zoneName);
+    }
     }
 }
