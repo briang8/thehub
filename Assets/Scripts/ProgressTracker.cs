@@ -3,6 +3,7 @@ using UnityEngine;
 public class ProgressTracker : MonoBehaviour
 {
     public static ProgressTracker Instance;
+    [SerializeField] private GameObject winPanel;
 
     private bool mentorshipDone = false;
     private bool devicesDone = false;
@@ -16,15 +17,19 @@ public class ProgressTracker : MonoBehaviour
 
     public void UnlockZone(string zoneName)
     {
-        switch (zoneName)
-        {
-            case "MentorshipLounge": mentorshipDone = true; break;
-            case "DevicesRoom": devicesDone = true; break;
-            case "SkillsLab": skillsDone = true; break;
-            case "CommunityBoard": communityDone = true; break;
-        }
+    switch (zoneName)
+    {
+        case "MentorshipLounge": mentorshipDone = true; break;
+        case "DevicesRoom": devicesDone = true; break;
+        case "SkillsLab": skillsDone = true; break;
+        case "CommunityBoard": communityDone = true; break;
+    }
 
-        CheckWinCondition();
+    GameObject zone = GameObject.Find(zoneName);
+    if (zone != null)
+        JourneyLine.Instance.AddPoint(zone.transform.position);
+
+    CheckWinCondition();
     }
 
     public bool IsZoneDone(string zoneName)
@@ -41,9 +46,13 @@ public class ProgressTracker : MonoBehaviour
 
     private void CheckWinCondition()
     {
-        if (mentorshipDone && devicesDone && skillsDone && communityDone)
+    if (mentorshipDone && devicesDone && skillsDone && communityDone)
+    {
+        if (winPanel != null)
         {
-            Debug.Log("ALL ZONES COMPLETE - TRIGGER WIN");
+            winPanel.SetActive(true);
+            Time.timeScale = 0f;
         }
+    }
     }
 }
