@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void HandleRaycast()
-    d{
+    {
     Vector2 direction = moveInput != Vector2.zero ? moveInput.normalized : Vector2.down;
 
     Debug.DrawRay(transform.position, direction * raycastDistance, Color.red);
