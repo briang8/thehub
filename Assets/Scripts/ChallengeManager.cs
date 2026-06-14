@@ -12,6 +12,7 @@ public class ChallengeManager : MonoBehaviour
     [SerializeField] private Button answerBtn1;
     [SerializeField] private Button answerBtn2;
     [SerializeField] private Button answerBtn3;
+    [SerializeField] private GameObject completionParticlePrefab;
 
     private int correctAnswerIndex;
     private string currentZone;
@@ -95,6 +96,18 @@ public class ChallengeManager : MonoBehaviour
             Debug.Log("Correct! Zone unlocked: " + currentZone);
             ProgressTracker.Instance.UnlockZone(currentZone);
             CloseChallenge();
+            GameObject zone = GameObject.Find(currentZone);
+            if (zone != null)
+            {
+                GameObject particle = Instantiate(completionParticlePrefab, zone.transform.position, Quaternion.identity);
+                ParticleSystem ps = particle.GetComponent<ParticleSystem>();
+                if (ps != null)
+                {
+                    var main = ps.main;
+                    main.simulationSpace = ParticleSystemSimulationSpace.World;
+                    ps.Play();
+                }
+            }
         }
         else
         {

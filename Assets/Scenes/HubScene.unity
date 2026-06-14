@@ -2298,6 +2298,7 @@ MonoBehaviour:
   answerBtn1: {fileID: 112953382}
   answerBtn2: {fileID: 1847201032}
   answerBtn3: {fileID: 2113881079}
+  completionParticlePrefab: {fileID: 7754142034885073751, guid: a44e214306913fa4fa049cc3e1d6c9aa, type: 3}
 --- !u!4 &802599812
 Transform:
   m_ObjectHideFlags: 0
@@ -5012,6 +5013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  raycastDistance: 2
 --- !u!70 &2024156875
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
