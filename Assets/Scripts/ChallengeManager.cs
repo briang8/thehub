@@ -13,6 +13,7 @@ public class ChallengeManager : MonoBehaviour
     [SerializeField] private Button answerBtn2;
     [SerializeField] private Button answerBtn3;
     [SerializeField] private GameObject completionParticlePrefab;
+    [SerializeField] private TextMeshProUGUI feedbackText;
 
     private int correctAnswerIndex;
     private string currentZone;
@@ -87,6 +88,7 @@ public class ChallengeManager : MonoBehaviour
         answerBtn1.onClick.AddListener(() => CheckAnswer(1));
         answerBtn2.onClick.AddListener(() => CheckAnswer(2));
         answerBtn3.onClick.AddListener(() => CheckAnswer(3));
+        if (feedbackText != null) feedbackText.text = "";
     }
 
     private void CheckAnswer(int selected)
@@ -118,16 +120,22 @@ public class ChallengeManager : MonoBehaviour
 
     private System.Collections.IEnumerator FlashWrong(int btnIndex)
     {
-        Button btn = btnIndex == 1 ? answerBtn1 : btnIndex == 2 ? answerBtn2 : answerBtn3;
-        ColorBlock colors = btn.colors;
-        Color original = colors.normalColor;
-        colors.normalColor = Color.red;
-        btn.colors = colors;
-        yield return new WaitForSecondsRealtime(0.5f);
-        colors.normalColor = original;
-        btn.colors = colors;
-    }
+    Button btn = btnIndex == 1 ? answerBtn1 : btnIndex == 2 ? answerBtn2 : answerBtn3;
+    ColorBlock colors = btn.colors;
+    Color original = colors.normalColor;
+    colors.normalColor = Color.red;
+    btn.colors = colors;
 
+    if (feedbackText != null)
+    {
+    feedbackText.text = "Wrong answer! Try again.";
+    }
+    
+    yield return new WaitForSecondsRealtime(1.5f);
+    
+    if (feedbackText != null)
+    feedbackText.text = "";
+    }
     public void CloseChallenge()
     {
         challengePanel.SetActive(false);
