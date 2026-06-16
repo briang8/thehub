@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
     }
 
     public void RestartGame()

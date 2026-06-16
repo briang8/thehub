@@ -25,29 +25,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        // Enable the input actions without binding to fixed event delegates
         inputActions.Player.Enable();
-        inputActions.Player.Move.performed += OnMove;
-        inputActions.Player.Move.canceled += OnMoveCanceled;
     }
 
     private void OnDisable()
     {
         if (inputActions != null)
         {
-            inputActions.Player.Move.performed -= OnMove;
-            inputActions.Player.Move.canceled -= OnMoveCanceled;
             inputActions.Player.Disable();
         }
     }
 
-    private void OnMove(InputAction.CallbackContext context)
+    private void Update()
     {
-        moveInput = context.ReadValue<Vector2>();
-    }
+        // Continuously read input from either Keyboard (WASD) or UI Joystick (<Gamepad>/leftStick)
 
-    private void OnMoveCanceled(InputAction.CallbackContext context)
-    {
-        moveInput = Vector2.zero;
+        moveInput = inputActions.Player.Move.ReadValue<Vector2>();
     }
 
     private void FixedUpdate()
@@ -67,47 +61,46 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleRaycast()
     {
-    Vector2 direction = moveInput != Vector2.zero ? moveInput.normalized : Vector2.down;
+        Vector2 direction = moveInput != Vector2.zero ? moveInput.normalized : Vector2.down;
+        Debug.DrawRay(transform.position, direction * raycastDistance, Color.red);
+        
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, raycastDistance);
 
-    Debug.DrawRay(transform.position, direction * raycastDistance, Color.red);
-    
-    RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, raycastDistance);
-
-    bool foundZone = false;
-    foreach (RaycastHit2D hit in hits)
-    {
-        if (hit.collider.gameObject == gameObject) continue;
-
-        if (hit.collider.CompareTag("MentorshipLounge") ||
-            hit.collider.CompareTag("DevicesRoom") ||
-            hit.collider.CompareTag("SkillsLab") ||
-            hit.collider.CompareTag("CommunityBoard"))
+        bool foundZone = false;
+        foreach (RaycastHit2D hit in hits)
         {
-            GameObject hitZone = hit.collider.gameObject;
-            foundZone = true;
+            if (hit.collider.gameObject == gameObject) continue;
 
-            if (hitZone != lastHitZone)
+            if (hit.collider.CompareTag("MentorshipLounge") ||
+                hit.collider.CompareTag("DevicesRoom") ||
+                hit.collider.CompareTag("SkillsLab") ||
+                hit.collider.CompareTag("CommunityBoard"))
             {
-                ResetLastZone();
-                lastHitZone = hitZone;
-                SpriteRenderer sr = hitZone.GetComponent<SpriteRenderer>();
-                if (sr != null)
-                {
-                    originalColor = sr.color;
-                    sr.color = new Color(
-                        Mathf.Min(originalColor.r + 0.2f, 1f),
-                        Mathf.Min(originalColor.g + 0.2f, 1f),
-                        Mathf.Min(originalColor.b + 0.2f, 1f),
-                        originalColor.a
-                    );
-                }
-            }
-            break;
-        }
-    }
+                GameObject hitZone = hit.collider.gameObject;
+                foundZone = true;
 
-    if (!foundZone)
-        ResetLastZone();
+                if (hitZone != lastHitZone)
+                {
+                    ResetLastZone();
+                    lastHitZone = hitZone;
+                    SpriteRenderer sr = hitZone.GetComponent<SpriteRenderer>();
+                    if (sr != null)
+                    {
+                        originalColor = sr.color;
+                        sr.color = new Color(
+                            Mathf.Min(originalColor.r + 0.2f, 1f),
+                            Mathf.Min(originalColor.g + 0.2f, 1f),
+                            Mathf.Min(originalColor.b + 0.2f, 1f),
+                            originalColor.a
+                        );
+                    }
+                }
+                break;
+            }
+        }
+
+        if (!foundZone)
+            ResetLastZone();
     }
 
     private void ResetLastZone()
