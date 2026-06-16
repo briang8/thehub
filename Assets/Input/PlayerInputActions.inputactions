@@ -27,17 +27,6 @@
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "4d2000be-dd7d-47a7-bd34-cda64cb1c879",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "2D Vector",
                     "id": "b0c3dd84-06a7-44cf-aff3-4fb0f1d30355",
                     "path": "2DVector",
@@ -94,8 +83,30 @@
                 },
                 {
                     "name": "",
+                    "id": "038c1ab6-8fde-4da7-9181-705f937d9687",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "61ce4c74-7a2b-4982-a5e5-283697e57bcc",
                     "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5145a3f4-4e3e-447a-9bca-cf84c8a7b525",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
